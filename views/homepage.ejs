@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>My Drive</h1>
+    <div>
+        <h2>folders</h2>
+        <button class="newFolderButton" onClick="window.location.href='/folders/<%= parentFolderId%>/new'">
+            create new folder
+        </button>
+        <% folders.forEach((folder)=> { %>
+            <%- include('folder', {folder: folder}) %>
+        <%})%>
+    </div>
+    <div>
+        <h2>files</h2>
+        <% files.forEach((file)=> { %>
+            <%- include('file', {file: file}) %>
+        <%})%>
+    </div>
+</body>
+</html>

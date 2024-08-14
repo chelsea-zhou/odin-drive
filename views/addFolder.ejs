@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>create new folder</title>
+</head>
+<body>
+    <div class="newFolder">
+        <form action="/folders/<%= parentFolderId%>/new" method="POST">
+            <label > folder name</label>
+            <input type="text" name="name">
+            <button type="submit">create folder</button>
+        </form>
+    </div>
+</body>
+</html>
