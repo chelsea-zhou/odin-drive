@@ -7,12 +7,12 @@
 </head>
 <body>
     <div class="newFolder">
-        <form action="/folders/<%= folder_id%>/files/new" method="POST">
+        <form action="/folders/<%= folder_id%>/files/new" method="POST" enctype="multipart/form-data">
             <label > file name</label>
             <input type="text" name="name">
-            <label > file address</label>
-            <input type="text" name="address">
-            <button type="submit">create file</button>
+            <label > upload file</label>
+            <input type="file" name="file">
+            <button type="submit">submit file</button>
         </form>
     </div>
 </body>

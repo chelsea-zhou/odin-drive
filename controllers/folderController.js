@@ -40,21 +40,38 @@ async function createFile(req, res) {
     if(!req.user) { 
         return res.redirect('/login');
     }
+    console.log(`file is ${JSON.stringify(req.file)}`);
+
     let folder_id = rootFolderId;
     if (req.params && req.params.folder_id) {
         folder_id = req.params.folder_id;
     }
     const body = req.body;
+    console.log(`req body is ${JSON.stringify(body)}`);
+    const arr = req.file.path.split("public/");
+    const relativePath = arr[arr.length - 1];
     const request = {
         name: body.name,
         folderId: folder_id,
-        address: body.address
+        address: relativePath
     }
     await db.createFile(request);
     res.redirect(`/folders/${folder_id}`);
 }
+
+async function getFile(req, res) {
+    if(!req.user) { 
+        return res.redirect('/login');
+    }
+    const request = {
+        id: req.params.file_id
+    }
+    const file = await db.getFile(request);
+    res.render("fileDetails", {file});
+}
 module.exports = {
     createFolder,
     getFolderById,
-    createFile
+    createFile,
+    getFile
 }

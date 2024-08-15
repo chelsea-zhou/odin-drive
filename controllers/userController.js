@@ -8,7 +8,7 @@ async function createUser(req, res) {
         username: body.username,
         password: hashedPw
     }
-    console.log(`usename is ${JSON.stringify(createReq)}`);
+    // console.log(`usename is ${JSON.stringify(createReq)}`);
     await db.createUser(createReq);
     res.redirect('/');
 }

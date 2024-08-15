@@ -9,7 +9,6 @@ async function createUser(req) {
             password: req.password
         }
     });
-    console.log(JSON.stringify(result));
 }
 
 // technically username is unique here
@@ -21,7 +20,6 @@ async function getUserByName(req) {
             }
         }
     });
-    console.log(`users ${JSON.stringify(user)}`);
     return user;
 }
 
@@ -32,7 +30,6 @@ async function getUserById(id) {
             id:  id
         }
     });
-    console.log(`users ${JSON.stringify(user)}`);
     return user;
 }
 
@@ -54,7 +51,7 @@ async function getFoldersByUserId(req) {
             }
         }
     });
-    console.log(`got folders ${JSON.stringify(folders)}`);
+    // console.log(`got folders ${JSON.stringify(folders)}`);
     // to do : get files
     return folders;
 }
@@ -66,7 +63,7 @@ async function getFoldersById(req) {
             userId: req.userId
         }
     });
-    console.log(`got folders ${JSON.stringify(folders)}`);
+    // console.log(`got folders ${JSON.stringify(folders)}`);
     // to do : get files as well
     return folders;
 }
@@ -78,7 +75,7 @@ async function getFiles(req) {
             folderId: req.id
         }
     });
-    console.log(`got files ${JSON.stringify(files)}`);
+    // console.log(`got files ${JSON.stringify(files)}`);
     return files;
 }
 
@@ -93,6 +90,16 @@ async function createFile(req){
     })
 }
 
+async function getFile(req) {
+    const file = await client.file.findUnique({
+        where : {
+            id: req.id
+        }
+    });
+    console.log(`got file : ${JSON.stringify(file)}`);
+    return file;
+}
+
 module.exports = {
     getUserById,
     getUserByName,
@@ -101,13 +108,6 @@ module.exports = {
     getFoldersById,
     createFolder,
     getFiles,
-    createFile
+    createFile,
+    getFile
 }
-
-createFile({
-    name: "filetest",
-    folderId: "root",
-    address: "addr",
-    date: new Date()
-});
-
