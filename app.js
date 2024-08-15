@@ -3,6 +3,8 @@ const folderController = require("./controllers/folderController");
 const userController = require("./controllers/userController");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
+const { PrismaClient } = require('@prisma/client');
 
 const app = express();
 const passport = require('passport');
@@ -10,8 +12,24 @@ const LocalStrategy = require('passport-local').Strategy;
 app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
 
-
-app.use(session({secret: "cats", resave: false, saveUninitialized: false}));
+app.use(
+    session({
+      cookie: {
+       maxAge: 7 * 24 * 60 * 60 * 1000 // ms
+      },
+      secret: 'a santa at nasa',
+      resave: true,
+      saveUninitialized: true,
+      store: new PrismaSessionStore(
+        new PrismaClient(),
+        {
+          checkPeriod: 2 * 60 * 1000,  //ms
+          dbRecordIdIsSessionId: true,
+          dbRecordIdFunction: undefined,
+        }
+      )
+    })
+);
 app.use(passport.session());
 
 // for user login

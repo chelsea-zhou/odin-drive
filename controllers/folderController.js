@@ -1,10 +1,13 @@
 const db = require("../prisma/script");
 
+// created placeholder row in folder with id = root for homepage
 const rootFolderId = 'root';
+
 async function getFolderById(req, res) {
     if(!req.user) { 
         return res.redirect('/login');
     }
+    console.log(`session data is ${JSON.stringify(req.session)}`);
     let folder_id = rootFolderId;
     if (req.params && req.params.folder_id) {
         folder_id = req.params.folder_id;
@@ -33,7 +36,6 @@ async function createFolder(req, res) {
     res.redirect('/folders/${parentFolderId}');
 }
 
-// todo: when creating file in root, there is no corresponding folder, thus error
 async function createFile(req, res) {
     if(!req.user) { 
         return res.redirect('/login');
