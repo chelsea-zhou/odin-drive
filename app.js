@@ -75,4 +75,8 @@ app.post(`/folders/:folder_id/new`, folderController.createFolder);
 
 // app.get(`/folders/:folder_id/files/:fild_id`, folderController.getFile);
 
+app.get('/folders/:folder_id/files/new', (req, res) => {
+    res.render("addFile", {folder_id: req.params.folder_id});
+});
+app.post('/folders/:folder_id/files/new', folderController.createFile);
 app.listen(3000, ()=> console.log(`server started listening to port 3000`));

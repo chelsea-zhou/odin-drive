@@ -18,6 +18,9 @@
     </div>
     <div>
         <h2>files</h2>
+        <button class="newFolderButton" onClick="window.location.href='/folders/<%= parentFolderId%>/files/new'">
+            add new file
+        </button>
         <% files.forEach((file)=> { %>
             <%- include('file', {file: file}) %>
         <%})%>

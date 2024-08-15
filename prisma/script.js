@@ -71,12 +71,43 @@ async function getFoldersById(req) {
     return folders;
 }
 
+// do i need user id here? 
+async function getFiles(req) {
+    const files = await client.file.findMany({
+        where: {
+            folderId: req.id
+        }
+    });
+    console.log(`got files ${JSON.stringify(files)}`);
+    return files;
+}
+
+async function createFile(req){
+    await client.file.create({
+        data: {
+            name: req.name,
+            folderId: req.folderId,
+            address: req.address,
+            date: new Date()
+        }
+    })
+}
+
 module.exports = {
     getUserById,
     getUserByName,
     createUser,
     getFoldersByUserId,
     getFoldersById,
-    createFolder
+    createFolder,
+    getFiles,
+    createFile
 }
+
+createFile({
+    name: "filetest",
+    folderId: "root",
+    address: "addr",
+    date: new Date()
+});
 
