@@ -9,6 +9,7 @@
     <div>
         <p> <%= file.name %></p>
         <img src="/<%= file.address %>" width="300px" height="300px"></p>
+        <button onClick="window.location.href='/files/<%= file.id %>/download'">download file</button> 
     </div>
 </body>
 </html>

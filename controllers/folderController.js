@@ -1,4 +1,5 @@
 const db = require("../prisma/script");
+const path = require('path');
 
 // created placeholder row in folder with id = root for homepage
 const rootFolderId = 'root';
@@ -69,9 +70,29 @@ async function getFile(req, res) {
     const file = await db.getFile(request);
     res.render("fileDetails", {file});
 }
+
+async function downloadFile(req, res) {
+    if(!req.user) { 
+        return res.redirect('/login');
+    }
+    const request = {
+        id: req.params.file_id
+    }
+    const file = await db.getFile(request);
+    const filePath = path.join('public', file.address);
+    console.log(filePath);
+    res.download(filePath, (err) => {
+      if (err) {
+        console.error('Error while downloading file:', err);
+        res.status(500).send('Could not download the file.');
+      }
+    });
+}
+
 module.exports = {
     createFolder,
     getFolderById,
     createFile,
-    getFile
+    getFile,
+    downloadFile
 }
