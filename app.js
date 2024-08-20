@@ -58,5 +58,8 @@ app.get('/folders/:folder_id/files/new', (req, res) => {
 });
 
 app.get('/files/:file_id/download', folderController.downloadFile);
+
+// todo: this upload file name is a string, how to show file type? 
+// same as downloaded file
 app.post('/folders/:folder_id/files/new', upload.single('file'), folderController.createFile);
 app.listen(3000, ()=> console.log(`server started listening to port 3000`));

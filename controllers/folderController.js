@@ -17,9 +17,29 @@ async function getFolderById(req, res) {
         id: folder_id,
         userId: req.user.id
     }
-    const folders = await db.getFoldersById(request)
+    // query the current folder to get parents + current folder name
+    const getCurrentFolderRequest = {
+        id: folder_id
+    }
+    const currentFolder = await db.getCurrnetFolderById(getCurrentFolderRequest);
+
+    const breadCrumbs = getBreadCrumbs(currentFolder, []);
+    const childFolders = await db.getFoldersById(request)
     const files = await db.getFiles(request);
-    res.render("homepage", {folders,  files: files, parentFolderId: folder_id});
+    res.render("homepage", {childFolders,  files, currentFolder, breadCrumbs});
+}
+
+function getBreadCrumbs(currentFolder, arr) {
+    if (currentFolder == null || currentFolder == undefined) {
+        return []
+    }
+    arr = getBreadCrumbs(currentFolder.parentFolder, arr);
+    const currentBreadCrumb = {
+        name: currentFolder.name,
+        id: currentFolder.id
+    }
+    arr.push(currentBreadCrumb);
+    return arr;
 }
 
 async function createFolder(req, res) {
@@ -34,7 +54,7 @@ async function createFolder(req, res) {
         userId: req.user.id,
     }
     await db.createFolder(request);
-    res.redirect('/folders/${parentFolderId}');
+    res.redirect(`/folders/${parentFolderId}`);
 }
 
 async function createFile(req, res) {

@@ -27,6 +27,8 @@ model User {
   folders Folder[]
 }
 
+  // this field is added for breadcrumb to backtrack parent folder
+
 model Folder {
   id String @id @default(uuid())
   user User @relation(fields: [userId], references: [id])
@@ -34,6 +36,8 @@ model Folder {
   name String 
   files File[]
   parentFolderId String?
+  parentFolder Folder? @relation("Subfolders", fields: [parentFolderId], references: [id])
+  subFolders Folder[] @relation("Subfolders")
 }
 
 model File {

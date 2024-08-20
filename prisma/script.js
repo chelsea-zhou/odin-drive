@@ -68,6 +68,28 @@ async function getFoldersById(req) {
     return folders;
 }
 
+async function getCurrnetFolderById(req) {
+    const folder = await client.folder.findUnique({
+        where: {
+            id: req.id
+        },
+        include: {
+            parentFolder: {
+                include : {
+                    parentFolder: {
+                        include: {
+                            parentFolder: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+    console.log(`got current folder ${JSON.stringify(folder)}`);
+    // to do : get files as well
+    return folder;
+}
+
 // do i need user id here? 
 async function getFiles(req) {
     const files = await client.file.findMany({
@@ -106,6 +128,7 @@ module.exports = {
     createUser,
     getFoldersByUserId,
     getFoldersById,
+    getCurrnetFolderById,
     createFolder,
     getFiles,
     createFile,

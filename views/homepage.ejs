@@ -7,18 +7,24 @@
 </head>
 <body>
     <h1>My Drive</h1>
+    <h1>current folder: <%= currentFolder.name %></h1>
+    <nav>
+        <% breadCrumbs.forEach((bc) => { %>
+            <a href="/folders/<%= bc.id %>"><%= bc.name %></a> >
+        <% }) %>
+    </nav>
     <div>
         <h2>folders</h2>
-        <button class="newFolderButton" onClick="window.location.href='/folders/<%= parentFolderId%>/new'">
+        <button class="newFolderButton" onClick="window.location.href='/folders/<%= currentFolder.id%>/new'">
             create new folder
         </button>
-        <% folders.forEach((folder)=> { %>
+        <% childFolders.forEach((folder)=> { %>
             <%- include('folder', {folder: folder}) %>
         <%})%>
     </div>
     <div>
         <h2>files</h2>
-        <button class="newFolderButton" onClick="window.location.href='/folders/<%= parentFolderId%>/files/new'">
+        <button class="newFolderButton" onClick="window.location.href='/folders/<%= currentFolder.id%>/files/new'">
             add new file
         </button>
         <% files.forEach((file)=> { %>
