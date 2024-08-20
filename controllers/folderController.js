@@ -5,9 +5,6 @@ const path = require('path');
 const rootFolderId = 'root';
 
 async function getFolderById(req, res) {
-    if(!req.user) { 
-        return res.redirect('/login');
-    }
     console.log(`session data is ${JSON.stringify(req.session)}`);
     let folder_id = rootFolderId;
     if (req.params && req.params.folder_id) {
@@ -43,9 +40,6 @@ function getBreadCrumbs(currentFolder, arr) {
 }
 
 async function createFolder(req, res) {
-    if(!req.user) {
-        return res.redirect('/login');
-    }
     const body = req.body;
     const parentFolderId = req.params.folder_id || rootFolderId;
     const request = {
@@ -57,10 +51,14 @@ async function createFolder(req, res) {
     res.redirect(`/folders/${parentFolderId}`);
 }
 
+function getCreateFile(req, res) {
+    res.render("addFile", {folder_id: req.params.folder_id});
+}
+
+function getCreateFolder(req, res) {
+    res.render("addFolder", {parentFolderId: req.params.folder_id});
+}
 async function createFile(req, res) {
-    if(!req.user) { 
-        return res.redirect('/login');
-    }
     console.log(`file is ${JSON.stringify(req.file)}`);
 
     let folder_id = rootFolderId;
@@ -81,9 +79,6 @@ async function createFile(req, res) {
 }
 
 async function getFile(req, res) {
-    if(!req.user) { 
-        return res.redirect('/login');
-    }
     const request = {
         id: req.params.file_id
     }
@@ -92,9 +87,6 @@ async function getFile(req, res) {
 }
 
 async function downloadFile(req, res) {
-    if(!req.user) { 
-        return res.redirect('/login');
-    }
     const request = {
         id: req.params.file_id
     }
@@ -112,7 +104,9 @@ async function downloadFile(req, res) {
 module.exports = {
     createFolder,
     getFolderById,
+    getCreateFolder,
     createFile,
+    getCreateFile,
     getFile,
     downloadFile
 }
