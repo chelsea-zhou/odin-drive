@@ -11,6 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Session {
@@ -26,8 +27,6 @@ model User {
   password String
   folders Folder[]
 }
-
-  // this field is added for breadcrumb to backtrack parent folder
 
 model Folder {
   id String @id @default(uuid())

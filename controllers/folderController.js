@@ -1,11 +1,14 @@
 const db = require("../prisma/script");
-const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
 // created placeholder row in folder with id = root for homepage
 const rootFolderId = 'root';
 
 async function getFolderById(req, res) {
-    console.log(`session data is ${JSON.stringify(req.session)}`);
+    // console.log(`session data is ${JSON.stringify(req.session)}`);
     let folder_id = rootFolderId;
     if (req.params && req.params.folder_id) {
         folder_id = req.params.folder_id;
@@ -58,21 +61,31 @@ function getCreateFile(req, res) {
 function getCreateFolder(req, res) {
     res.render("addFolder", {parentFolderId: req.params.folder_id});
 }
+
 async function createFile(req, res) {
-    console.log(`file is ${JSON.stringify(req.file)}`);
+    const file = req.file;
+    if(!file) {
+        res.status(404).json({error: "no file uploaded"});
+    }
+
+    const {data, error} = await supabaseClient.storage
+        .from('b1')
+        .upload(`${file.originalname}`, file.buffer, {
+            contentType: file.mimetype
+        });
+    if (error) {
+        console.log(`err is ${JSON.stringify(error)}`);
+        throw error;
+    }
 
     let folder_id = rootFolderId;
     if (req.params && req.params.folder_id) {
         folder_id = req.params.folder_id;
     }
-    const body = req.body;
-    console.log(`req body is ${JSON.stringify(body)}`);
-    const arr = req.file.path.split("public/");
-    const relativePath = arr[arr.length - 1];
     const request = {
-        name: body.name,
+        name: req.body.name,
         folderId: folder_id,
-        address: relativePath
+        address: data.path
     }
     await db.createFile(request);
     res.redirect(`/folders/${folder_id}`);
@@ -82,23 +95,21 @@ async function getFile(req, res) {
     const request = {
         id: req.params.file_id
     }
-    const file = await db.getFile(request);
-    res.render("fileDetails", {file});
-}
-
-async function downloadFile(req, res) {
-    const request = {
-        id: req.params.file_id
+    try {
+        const file = await db.getFile(request);
+        const {data, error} = await supabaseClient.storage
+            .from('b1')
+            .createSignedUrl(file.address, 60*60);
+        if (error) {
+            throw error;
+        } else {
+            const signedUrl = data.signedUrl;
+            res.render("fileDetails", {file, signedUrl});
+        }
+    } catch (err) {
+        console.log(`err ${JSON.stringify(err)}`);
+        res.status(500).send('Error downloading the file');
     }
-    const file = await db.getFile(request);
-    const filePath = path.join('public', file.address);
-    console.log(filePath);
-    res.download(filePath, (err) => {
-      if (err) {
-        console.error('Error while downloading file:', err);
-        res.status(500).send('Could not download the file.');
-      }
-    });
 }
 
 module.exports = {
@@ -107,6 +118,5 @@ module.exports = {
     getCreateFolder,
     createFile,
     getCreateFile,
-    getFile,
-    downloadFile
+    getFile
 }
