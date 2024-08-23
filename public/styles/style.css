@@ -1,0 +1,120 @@
+.folder {
+    border: 2px solid red;
+    width: 100px;
+    height: 130px;
+    margin: 10px;
+}
+.folder img{
+    width: 100px;
+    height: 100px;
+    border: 2px solid red;
+    margin: 0;
+    padding: 0;
+}
+
+.folder p {
+    margin-top: -15px;
+    padding: 0;
+    text-align: center;
+    border: 2px solid red;
+}
+
+html {
+ margin: 20px;
+}
+.folders .files{
+    margin: 10px;
+}
+
+
+.files {
+    display: flex;
+}
+.file {
+    width: 50px;
+    height: 70px;
+    border: 2px solid blue;
+    margin: 5px;
+}
+
+.file img{
+    width: 50px;
+    height: 50px;
+    border: 2px solid red;
+    margin: 0;
+    padding: 0;
+}
+.file p {
+    margin-top: -5px;
+    padding: 0;
+    text-align: center;
+    border: 2px solid red;
+    font-size: x-small;
+}
+
+
+
+.headingContainer {
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+}
+
+.headingContainer p{
+    font-size: x-large;
+}
+
+* {
+    border: 2px solid blue;
+}
+.headingContainer img{
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.path {
+    font-size:xx-large;
+    margin-right: 5px; 
+}
+
+
+
+.newFolder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.newFolder p {
+    font-size: x-large;
+    text-align: center;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: auto;
+}
+
+.newFolder button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.newFolder button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.newFolder button:active {
+    transform: translateY(0);
+}

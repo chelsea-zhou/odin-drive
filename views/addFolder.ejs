@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>create new folder</title>
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
     <div class="newFolder">
+        <p> Create New Folder </p>
         <form action="/folders/<%= parentFolderId%>/new" method="POST">
-            <label > folder name</label>
+            <label> Folder name</label>
             <input type="text" name="name">
             <button type="submit">create folder</button>
         </form>

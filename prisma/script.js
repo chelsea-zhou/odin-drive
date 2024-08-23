@@ -85,7 +85,6 @@ async function getCurrnetFolderById(req) {
             }
         }
     });
-    console.log(`got current folder ${JSON.stringify(folder)}`);
     // to do : get files as well
     return folder;
 }

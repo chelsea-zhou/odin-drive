@@ -3,33 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/style.css">
     <title>Document</title>
 </head>
 <body>
     <h1>My Drive</h1>
-    <h1>current folder: <%= currentFolder.name %></h1>
     <nav>
         <% breadCrumbs.forEach((bc) => { %>
-            <a href="/folders/<%= bc.id %>"><%= bc.name %></a> >
+            <a href="/folders/<%= bc.id %>"><span class="path"><%= bc.name %></span></a> >
         <% }) %>
     </nav>
     <div>
-        <h2>folders</h2>
-        <button class="newFolderButton" onClick="window.location.href='/folders/<%= currentFolder.id%>/new'">
-            create new folder
-        </button>
-        <% childFolders.forEach((folder)=> { %>
-            <%- include('folder', {folder: folder}) %>
-        <%})%>
+        <div class="headingContainer">
+            <p>Folders</p>
+            <img class="newFolder" src="/icons/folder-plus.svg"  onClick="window.location.href='/folders/<%= currentFolder.id%>/new'">
+        </div>
+        
+        <div class="folders">
+            <% childFolders.forEach((folder)=> { %>
+                <%- include('folder', {item: folder, link: "/icons/folder.svg", classname: "folder"}) %>
+            <%})%>
+        </div>
+
     </div>
     <div>
-        <h2>files</h2>
-        <button class="newFolderButton" onClick="window.location.href='/folders/<%= currentFolder.id%>/files/new'">
-            add new file
-        </button>
+        <div class="headingContainer">
+            <p>Files</p>
+            <img class="newFolder" src="/icons/file-earmark-plus.svg"  onClick="window.location.href='/folders/<%= currentFolder.id%>/files/new'">
+        </div>
+        <div class="files">
         <% files.forEach((file)=> { %>
-            <%- include('file', {file: file}) %>
+            <%- include('file', {file: file, link: "/icons/file-earmark-post.svg", classname:"file"}) %>
         <%})%>
+        </div>
     </div>
 </body>
 </html>
